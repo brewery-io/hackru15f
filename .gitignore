@@ -1,2 +1,8 @@
+# python
+
 *.pyc
 config.py
+
+#keys
+
+spotify_appkey.key

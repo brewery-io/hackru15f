@@ -9,3 +9,7 @@ spotify_appkey.key
 
 #temp folders
 tmp/
+
+#sub gits
+Spotify-Android-SDK-Example-App/
+volley/

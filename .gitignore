@@ -6,3 +6,6 @@ config.py
 #keys
 
 spotify_appkey.key
+
+#temp folders
+tmp/

@@ -4,7 +4,7 @@ import twilio.twiml
 from pymongo import MongoClient
 import spotify
 from config import Config
-import threading
+
 urls = (
     "/new_song", "new_song",
 )
@@ -13,34 +13,34 @@ client = MongoClient("127.0.0.1", 27017)
 djone = client.djone
 djs = djone.djs
 
-logged_in_event = threading.Event()
-session = spotify.Session()
+try:
+    session = spotify.Session()
+    session.login(Config.username, Config.password)
+    while True:
+        session.process_events()
+        if session.connection.state == 1:
+            break
+    print "Logged in"
 
-def connection_state_listener(session):
-    if session.connection.state is spotify.ConnectionState.LOGGED_IN:
-        logged_in_event.set()
+except RuntimeError:
+    print "Session exists"
 
-session.on(spotify.SessionEvent.CONNECTION_STATE_UPDATED, connection_state_listener)
 
-session.login(Config.username, Config.password)
-
-while not logged_in_event.wait(0.1):
-    session.process_events()
 
 class new_song:
     def POST(self):
         # web.header("Content-Type", "application/xml")
+        print "NEW POST"
         web.header("Access-Control-Allow-Origin", "*")
         data = web.input()
         query = data["Body"]
         sender = data["From"]
         dj = data["To"]
 
-        if djs.find({"dj": "+17323911722"}):
-            search = session.search(query)
-            print search.load()
+        if djs.find({"dj": dj}):
+            "found that motherfucker"
         else:
-            print "No dj found, let user know"
+            print "No dj found, let user kno"
 
 
 if __name__ == "__main__":

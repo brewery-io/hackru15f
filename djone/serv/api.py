@@ -24,12 +24,24 @@ class yes_song:
 
     def GET(self):
 
-        message = twilio_client.messages.create(to="+17328950910", from_="+17323911722", body="Your song was added to the playlist! ")
+        data = web.input()
+        sender = data["from"]
+        name = data["name"]
+
+        # sender = "+17328950910"
+
+        message = twilio_client.messages.create(to=sender, from_="+17323911722", body="%s was added to the playlist! " % name)
 
 class no_song:
     def GET(self):
 
-        message = twilio_client.messages.create(to="+17328950910", from_="+17323911722", body="Your song wasn't accepted to be on the playlist! ")
+        data = web.input()
+        sender = data["from"]
+        name = data["name"]
+
+        # sender = "+17328950910"
+
+        message = twilio_client.messages.create(to=sender, from_="+17323911722", body="%s wasn't accepted to be on the playlist! " % name)
 
 class fetch_songs:
 

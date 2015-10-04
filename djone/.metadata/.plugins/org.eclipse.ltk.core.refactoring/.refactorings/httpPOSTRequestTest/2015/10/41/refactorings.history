@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete element from project &apos;httpPOSTRequestTest&apos;&#x0A;- Original project: &apos;httpPOSTRequestTest&apos;&#x0A;- Original element: &apos;gson-2.2.4.jar&apos;" description="Delete element" element1="gson-2.2.4.jar" elements="0" flags="589830" id="org.eclipse.jdt.ui.delete" resources="1" stamp="1443923966499" subPackages="false" version="1.0"/>
+</session>

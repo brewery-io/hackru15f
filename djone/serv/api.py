@@ -1,6 +1,7 @@
 import web
 import json
 import twilio.twiml
+from twilio.rest import TwilioRestClient
 from pymongo import MongoClient
 import spotify
 from config import Config
@@ -13,19 +14,22 @@ urls = (
     "/no_song", "no_song"
 )
 
-client = MongoClient("127.0.0.1", 27017)
-djone = client.djone
+mongo_client = MongoClient("127.0.0.1", 27017)
+djone = mongo_client.djone
 djs = djone.djs
+
+twilio_client = TwilioRestClient(Config.ssid, Config.auth)
 
 class yes_song:
 
-    def POST(self):
-
-        print "Alert user their song was accepted"
-
     def GET(self):
 
-        print "Alert user their taste is shit"
+        message = twilio_client.messages.create(to="+17328950910", from_="+17323911722", body="Your song was added to the playlist! ")
+
+class no_song:
+    def GET(self):
+
+        message = twilio_client.messages.create(to="+17328950910", from_="+17323911722", body="Your song wasn't accepted to be on the playlist! ")
 
 class fetch_songs:
 
@@ -33,7 +37,13 @@ class fetch_songs:
 
         web.header("Content-Type", "application/json")
         web.header("Access-Control-Allow-Origin", "*")
+
         document = djs.find_one({"dj": "+17323911722"})
+
+        new_document = {"dj": document["dj"], "queue": []}
+        djs.remove(document)
+        djs.insert_one(new_document)
+
         return json.dumps({"queue": document["queue"]})
 
 class new_song:
@@ -65,12 +75,15 @@ class new_song:
                 document["queue"].append({"name": name, "uri": uri, "from": sender})
                 djs.insert_one(document)
 
+                message = twilio_client.messages.create(to=sender, from_=dj, body="Your song was submitted to the DJ!")
+
+                print message
             except IndexError:
-                print "No song found, let user know"
+                message = twilio_client.messages.create(to=sender, from_=dj, body="No song like that was found!")
 
 
         else:
-            print "No dj found, let user know"
+            message = twilio_client.messages.create(to=sender, from_=dj, body="No DJ with that number was found!")
 
 
 if __name__ == "__main__":

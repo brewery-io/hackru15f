@@ -1,7 +1,8 @@
-# python
+# config
 
 *.pyc
 config.py
+deployment-config.json
 
 #keys
 

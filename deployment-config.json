@@ -1,9 +1,0 @@
-{
-    "type": "sftp",
-    "host": "45.79.172.115",
-    "username": "root",
-    "password": "martini17charleS4",
-    "port": 22,
-    "remotePath": "/var/www/",
-    "uploadOnSave": true
-}

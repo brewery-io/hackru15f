@@ -13,3 +13,6 @@ tmp/
 #sub gits
 Spotify-Android-SDK-Example-App/
 volley/
+
+#server
+server/

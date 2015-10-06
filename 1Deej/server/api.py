@@ -5,13 +5,13 @@ from twilio.rest import TwilioRestClient
 from pymongo import MongoClient
 import spotify
 from config import Config
-import json
 
 urls = (
     "/new_song", "new_song",
     "/fetch_songs", "fetch_songs",
     "/yes_song", "yes_song",
-    "/no_song", "no_song"
+    "/no_song", "no_song",
+    "/add_manual", "add_manual"
 )
 
 mongo_client = MongoClient("127.0.0.1", 27017)
@@ -19,6 +19,13 @@ djone = mongo_client.djone
 djs = djone.djs
 
 twilio_client = TwilioRestClient(Config.ssid, Config.auth)
+
+class add_manual:
+
+    def POST(self):
+
+        data = web.input()
+        query = data["query"]
 
 class yes_song:
 
@@ -33,6 +40,7 @@ class yes_song:
         message = twilio_client.messages.create(to=sender, from_="+17323911722", body="%s was added to the playlist! " % name)
 
 class no_song:
+
     def GET(self):
 
         data = web.input()
@@ -89,7 +97,6 @@ class new_song:
 
                 message = twilio_client.messages.create(to=sender, from_=dj, body="Your song was submitted to the DJ!")
 
-                print message
             except IndexError:
                 message = twilio_client.messages.create(to=sender, from_=dj, body="No song like that was found!")
 

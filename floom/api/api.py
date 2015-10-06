@@ -1,18 +1,35 @@
 import spotify
+import web
+import json
 from config import Config
-import time
-import threading
 
-logged_in_event = threading.Event()
-session = spotify.Session()
+urls = (
+    "/search", "search"
+)
 
-def connection_state_listener(session):
-    if session.connection.state is spotify.ConnectionState.LOGGED_IN:
-        logged_in_event.set()
+session = Config.session
 
-session.on(spotify.SessionEvent.CONNECTION_STATE_UPDATED, connection_state_listener)
+class search:
+    def POST():
+        data = web.input()
 
-session.login(Config.username, Config.password)
+        if data["query"] and data["type"]:
 
-while not logged_in_event.wait(0.1):
-    session.process_events()
+            
+
+def write(status, payload):
+    return json.dumps({"status": status, "payload": payload})
+
+def new_request():
+    web.header("Content-Type": "application/json")
+    web.header("Access-Control-Allow-Origin", "*")
+
+def notfound():
+    new_request()
+    return write(404, {"error": "Page not found. "})
+
+if __name__ == "__main__":
+
+    app = web.application(urls, globals())
+    app.notfound = notfound()
+    app.run()

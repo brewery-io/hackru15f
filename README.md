@@ -1,6 +1,8 @@
 # hackru15f
 Apps made by us during HackRU - fall 2015.
 
+https://youtu.be/Ed-TrJE5_M8?t=6m
+
 ## Winner
 
 ### Third place
